@@ -19,7 +19,7 @@ public class EuropeanNonPathDependentOption {
 	private DoubleUnaryOperator payoffFunction;
 
 	/**
-	 * It constructs an object which represents the implementation of the European, non path dependent.
+	 * It constructs an object which represents the implementation of the European, non path dependent option.
 	 * @param maturity, the maturity of the option
 	 * @param payoffFunction, the funtion which identifies the payoff. The payoff is f(S_T) for payoffFunction
 	 * f and underlying value S_T at maturity. The payoffFunction is represented by a DoubleUnaryOperator.
