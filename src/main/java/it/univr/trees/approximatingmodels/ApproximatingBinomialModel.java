@@ -53,8 +53,9 @@ public abstract class ApproximatingBinomialModel {
 		this.volatility = volatility;
 		this.lastTime = lastTime;
 		this.timeStep = timeStep;
-		numberOfTimes = (int) Math.round(lastTime/timeStep) + 1;//the number of times comes from the number of times steps
+		numberOfTimes = (int) (Math.round(lastTime/timeStep) + 1);//the number of times comes from the number of times steps
 	}
+
 
 	/**
 	 * It constructs an object of type ApproximatingBinomialModel.
@@ -66,7 +67,8 @@ public abstract class ApproximatingBinomialModel {
 	 * @param numberOfTimes, the number of times in the equally spaced time steps that we take for the approximating
 	 * time discretization 0=t_0<t_1<..<t_n=T
 	 */
-	public ApproximatingBinomialModel(double initialPrice, double riskFreeRate, double volatility, double lastTime, int numberOfTimes) {
+	public ApproximatingBinomialModel(double initialPrice, double riskFreeRate, double volatility,
+			double lastTime, int numberOfTimes) {
 		this.initialPrice = initialPrice;
 		this.riskFreeRate = riskFreeRate;
 		this.volatility = volatility;

@@ -55,6 +55,7 @@ public class LeisenReimerModel extends ApproximatingBinomialModel {
 	 * @return an arrays of two elements: the first is the up movement for the Leisen-Reimer model,
 	 * the second the down one.
 	 */
+	@Override
 	protected double[] getUpAndDownFactorsOfBinomialModel() {
 		/*
 		 * We use the getters of the parent class here, because the fields are private: we prefer to let them
@@ -76,11 +77,11 @@ public class LeisenReimerModel extends ApproximatingBinomialModel {
 		int numberOfTimeSteps = numberOfTimes -1;
 		double term1 = Math.pow((d1/(numberOfTimeSteps+1/3.0//note the 3.0 here and below! What would we get if we used 3?
 				+0.1/(numberOfTimeSteps+1))),2)*(numberOfTimeSteps+1/6.0);
-		double pp = 0.5+Math.signum(d1)*0.5*Math.sqrt(1-Math.exp(-term1));
+		double qprime = 0.5+Math.signum(d1)*0.5*Math.sqrt(1-Math.exp(-term1));
 		double term2 = Math.pow((d2/(numberOfTimeSteps+1/3.0+0.1/(numberOfTimeSteps+1))),2)*(numberOfTimeSteps+1/6.0);
 		double upProbability = 0.5+Math.signum(d2)*0.5*Math.sqrt(1-Math.exp(-term2));
-		double upFactor = bond*pp/upProbability;
-		double downFactor = bond*((1-pp)/(1-upProbability));
+		double upFactor = bond*qprime/upProbability;
+		double downFactor = bond*((1-qprime)/(1-upProbability));
 		double[] upAndDownFactors = {upFactor, downFactor};
 		return upAndDownFactors;
 	}

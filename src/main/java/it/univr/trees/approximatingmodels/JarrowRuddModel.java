@@ -45,6 +45,7 @@ public class JarrowRuddModel extends ApproximatingBinomialModel {
 	 * @return an arrays of two elements: the first is the up movement for the Jarrow-Rudd model,
 	 * the second the down one.
 	 */
+	@Override
 	protected double[] getUpAndDownFactorsOfBinomialModel() {
 		/*
 		 * We use the getters of the parent class here, because the fields are private: we prefer to let them
