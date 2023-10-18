@@ -78,7 +78,7 @@ public abstract class ApproximatingBinomialModel {
 
 	}
 
-	//this is an abstract method which gets implemented in the derived classes 
+	//this is an abstract method which gets implemented in the derived classes : it sets the up and down factors
 	protected abstract double[] getUpAndDownFactorsOfBinomialModel();
 
 	/*
