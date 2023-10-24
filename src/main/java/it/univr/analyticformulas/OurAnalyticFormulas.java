@@ -12,6 +12,4 @@ public class OurAnalyticFormulas {
 				* AnalyticFormulas.blackScholesOptionValue(lowerBarrier*lowerBarrier/initialValue, riskFreeRate, sigma, maturity, strike);
 	}
 
-
-
 }

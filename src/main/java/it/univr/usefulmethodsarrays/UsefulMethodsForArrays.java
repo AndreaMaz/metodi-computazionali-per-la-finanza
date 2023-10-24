@@ -110,6 +110,7 @@ public class UsefulMethodsForArrays {
 			double[] transformedArray = new double[lengthOriginalArray];
 			for (int i = 0; i<lengthOriginalArray; i++) {
 				//this is how DoubleUnaryOperator work: applyAsDouble is the method of the interface they implement
+				//transformedArray[i] = f(originalArray[i) where f is the function represented by transformFunction
 				transformedArray[i] = transformFunction.applyAsDouble(originalArray[i]);
 			}
 			return transformedArray;

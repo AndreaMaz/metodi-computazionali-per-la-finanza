@@ -52,7 +52,7 @@ public class BinomialModel {
 		this.numberOfTimes = numberOfTimes;	
 		//this must be fixed in order to avoid arbitrages!
 		riskNeutralProbabilityUp = (1 + riskFreeFactor - downFactor) / (upFactor - downFactor);
-		this.riskNeutralProbabilityDown = 1 - riskNeutralProbabilityUp;
+		riskNeutralProbabilityDown = 1 - riskNeutralProbabilityUp;
 		this.initialValue = initialValue;
 	}
 
@@ -63,6 +63,13 @@ public class BinomialModel {
 	 * binomial model at time index n. However, the last values of the row are zero, because at time n the binomial
 	 * model can only take n+1 values. Note that this could cause confusion if somebody is directly aware of this
 	 * method.
+	 */
+	
+	/*
+	 * [S_0 0 0 0 0 0 0 0]
+	 * [S_0*u S_0*d 0 0 0 0 0 0]
+	 * [S_0*u^2 S_0*u*d S_0*d^2 0 0 0 0 0 0]
+	 * ....
 	 */
 	private void generateValues() {
 		values = new double[numberOfTimes][numberOfTimes];
@@ -88,6 +95,13 @@ public class BinomialModel {
 	 * zero, because at time n the binomial model can only take n+1 values. Note that this could cause confusion
 	 * if somebody is directly aware of this method.
 	 */
+	
+	/*
+	 * [S_0 0 0 0 0 0 0 0]
+	 * [Q(S_0*u) Q(S_0*d) 0 0 0 0 0 0]
+	 * [Q(S_0*u^2) Q(S_0*u*d) Q(S_0*d^2) 0 0 0 0 0 0]
+	 * ....
+	 */
 	private void generateValuesProbabilities() {
 		valuesProbabilities = new double[numberOfTimes][numberOfTimes];
 		valuesProbabilities[0][0]=1;
@@ -96,7 +110,7 @@ public class BinomialModel {
 			/*
 			 * Here we have to take care of the computation of the binomial coefficient.  We are at
 			 * time n and start the next for loop with the case when we have k=0 ups. So we have
-			 * binomialCoefficient(n,k)=0 
+			 * binomialCoefficient(n,k)=n!/(k!(n-k)!)=1 
 			 */
 			double binomialCoefficient = 1;
 			for (int numberOfUps = 0; numberOfUps <= numberOfMovements; numberOfUps++) {
@@ -116,7 +130,7 @@ public class BinomialModel {
 				 * Since n!/(k!(n-k)!) is the last computed value, we multiply by (n-k) 
 				 * (so, by numberOfDowns) and divide by k+1, so, by the current number of ups plus 1.
 				 */
-				binomialCoefficient=binomialCoefficient*(numberOfDowns)/(numberOfUps+1);
+				binomialCoefficient=binomialCoefficient * (numberOfDowns)/(numberOfUps+1);
 			}
 		}
 	}
