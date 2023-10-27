@@ -11,7 +11,6 @@ import net.finmath.plots.Plot2D;
 
 public class ApproximatingModelsWithBarrierOptionTest {
 	
-
 	public static void main(String[] strings) throws Exception {
 
 		double spotPrice = 2;
@@ -62,8 +61,9 @@ public class ApproximatingModelsWithBarrierOptionTest {
 		DoubleUnaryOperator dummyFunctionBlackScholesPrice = (numberOfTimesForFunction) -> {
 			return OurAnalyticFormulas.blackScholesDownAndOut(spotPrice, riskFreeRate, volatility, lastTime, strike, lowerBarrier);
 		};
+	
 		
-		int maxNumberOfTimes = 500;
+		int maxNumberOfTimes = 1500;
 		int minNumberOfTimes = 10;
 		
 		//plots
@@ -91,12 +91,6 @@ public class ApproximatingModelsWithBarrierOptionTest {
 		plotLR.setXAxisLabel("Number of discretized times");
 		plotLR.setYAxisLabel("Price");
 		plotLR.setIsLegendVisible(true);
-		plotLR.show();
-		
-		
-		
-		
-		
+		plotLR.show();			
 	}
-
 }

@@ -20,9 +20,9 @@ public class ApproximatingModelsTest {
 		double riskFreeRate = 0.0;
 		double volatility = 0.2;
 		double lastTime = 1.0;
-		int numberOfTimes = 3;
+		int numberOfTimes = 100;
 
-		double strike = 100;
+		double strike = 80;
 		
 		//first test for Cox-Ross-Rubinstein: we just look at its epxected value
 		CoxRossRubinsteinModel firstApproximatingModel = new CoxRossRubinsteinModel(
@@ -75,10 +75,14 @@ public class ApproximatingModelsTest {
 		 * increase the number of times. In the same plot, we want to show also the analyic price of the option,
 		 * as a benchmark.
 		 */
-		DoubleUnaryOperator payoffFunction = (x) -> (x - strike > 0 ? x - strike : 0.0);//European call
+		DoubleUnaryOperator payoffFunction = (x) -> (x - strike > 0 ? 1.0 : 0.0);//European call
 		
 		EuropeanNonPathDependentOption ourOption = new EuropeanNonPathDependentOption(lastTime, payoffFunction);
 
+		//System.out.println(ourOption.getValue(thirdApproximatingModel));
+		//System.out.println(ourOption.getValueDirect(thirdApproximatingModel));
+
+		
 		
 		/*
 		 * We use the Plot2D class of finmath-lib-plot-extensions. In order to do that, we have to define the
@@ -89,18 +93,21 @@ public class ApproximatingModelsTest {
 		 * it when passing it to the getValue of EuropeanNonPathDependentOption.
 		 */
 		DoubleUnaryOperator numberOfTimesToPriceCoxRossRubinsteinModel = (numberOfTimesForFunction) -> {
-			CoxRossRubinsteinModel ourModelForFunction = new CoxRossRubinsteinModel(spotPrice, riskFreeRate, volatility, lastTime, (int) numberOfTimesForFunction);		
+			CoxRossRubinsteinModel ourModelForFunction = new CoxRossRubinsteinModel(spotPrice, riskFreeRate,
+					volatility, lastTime, (int) numberOfTimesForFunction);		
 			return ourOption.getValue(ourModelForFunction);
 		};
 		
 		DoubleUnaryOperator numberOfTimesToPriceJarrowRuddModel = (numberOfTimesForFunction) -> {
-			JarrowRuddModel ourModelForFunction = new JarrowRuddModel(spotPrice, riskFreeRate, volatility, lastTime, (int) numberOfTimesForFunction);		
+			JarrowRuddModel ourModelForFunction = new JarrowRuddModel(spotPrice, riskFreeRate,
+					volatility, lastTime, (int) numberOfTimesForFunction);		
 			return ourOption.getValue(ourModelForFunction);
 		};
 		
 		
 		DoubleUnaryOperator numberOfTimesToPriceLeisenReimer = (numberOfTimesForFunction) -> {
-			LeisenReimerModel ourModelForFunction = new LeisenReimerModel(spotPrice, riskFreeRate, volatility, lastTime, (int) numberOfTimesForFunction, strike);		
+			LeisenReimerModel ourModelForFunction = new LeisenReimerModel(spotPrice,
+					riskFreeRate, volatility, lastTime, (int) numberOfTimesForFunction, strike);		
 			return ourOption.getValue(ourModelForFunction);
 		};
 		
@@ -109,8 +116,8 @@ public class ApproximatingModelsTest {
 		 * that always gives the same value.
 		 */
 		DoubleUnaryOperator dummyFunctionBlackScholesPrice = (numberOfTimesForFunction) -> {
-			//return AnalyticFormulas.blackScholesDigitalOptionValue(spotPrice, riskFreeRate, volatility, lastTime, strike);
-			return AnalyticFormulas.blackScholesOptionValue(spotPrice,riskFreeRate,volatility, lastTime,strike,true);
+			return AnalyticFormulas.blackScholesDigitalOptionValue(spotPrice, riskFreeRate, volatility, lastTime, strike);
+			//return AnalyticFormulas.blackScholesOptionValue(spotPrice,riskFreeRate,volatility, lastTime,strike,true);
 		};
 
 		
@@ -118,8 +125,38 @@ public class ApproximatingModelsTest {
 		int maxNumberOfTimes = 500;
 		int minNumberOfTimes = 10;
 		
-		//look at the Plot2D constructor.
-		final Plot2D plotCRR = new Plot2D(minNumberOfTimes, maxNumberOfTimes, maxNumberOfTimes-minNumberOfTimes+1, Arrays.asList(
+//		//look at the Plot2D constructor.
+//		final Plot2D plotCRR = new Plot2D(minNumberOfTimes, maxNumberOfTimes, maxNumberOfTimes-minNumberOfTimes+1,
+//				Arrays.asList(
+//				new Named<DoubleUnaryOperator>("Cox Ross Rubinstein", numberOfTimesToPriceCoxRossRubinsteinModel),
+//				new Named<DoubleUnaryOperator>("Black-Scholes", dummyFunctionBlackScholesPrice))
+//				);
+		
+//		plotCRR.setXAxisLabel("Number of discretized times");
+//		plotCRR.setYAxisLabel("Price");
+//		plotCRR.setIsLegendVisible(true);
+//		plotCRR.show();
+//		
+//		final Plot2D plotJR = new Plot2D(minNumberOfTimes, maxNumberOfTimes, maxNumberOfTimes-minNumberOfTimes+1, Arrays.asList(
+//				new Named<DoubleUnaryOperator>("Jarrow Rudd", numberOfTimesToPriceJarrowRuddModel),
+//				new Named<DoubleUnaryOperator>("Black-Scholes", dummyFunctionBlackScholesPrice)));
+//		plotJR.setXAxisLabel("Number of discretized times");
+//		plotJR.setYAxisLabel("Price");
+//		plotJR.setIsLegendVisible(true);
+//		plotJR.show();
+//		
+//		final Plot2D plotLR = new Plot2D(minNumberOfTimes, maxNumberOfTimes,  maxNumberOfTimes-minNumberOfTimes+1, Arrays.asList(
+//				new Named<DoubleUnaryOperator>("Leisen Reimer", numberOfTimesToPriceLeisenReimer),
+//				new Named<DoubleUnaryOperator>("Black-Scholes", dummyFunctionBlackScholesPrice)));
+//		plotLR.setXAxisLabel("Number of discretized times");
+//		plotLR.setYAxisLabel("Price");
+//		plotLR.setIsLegendVisible(true);
+//		plotLR.show();
+		
+
+		
+		
+		final Plot2D plotCRR = new Plot2D(minNumberOfTimes, maxNumberOfTimes, (maxNumberOfTimes-minNumberOfTimes+2)/2, Arrays.asList(
 				new Named<DoubleUnaryOperator>("Cox Ross Rubinstein", numberOfTimesToPriceCoxRossRubinsteinModel),
 				new Named<DoubleUnaryOperator>("Black-Scholes", dummyFunctionBlackScholesPrice)));
 		
@@ -128,7 +165,7 @@ public class ApproximatingModelsTest {
 		plotCRR.setIsLegendVisible(true);
 		plotCRR.show();
 		
-		final Plot2D plotJR = new Plot2D(minNumberOfTimes, maxNumberOfTimes, maxNumberOfTimes-minNumberOfTimes+1, Arrays.asList(
+		final Plot2D plotJR = new Plot2D(minNumberOfTimes, maxNumberOfTimes, (maxNumberOfTimes-minNumberOfTimes+2)/2, Arrays.asList(
 				new Named<DoubleUnaryOperator>("Jarrow Rudd", numberOfTimesToPriceJarrowRuddModel),
 				new Named<DoubleUnaryOperator>("Black-Scholes", dummyFunctionBlackScholesPrice)));
 		plotJR.setXAxisLabel("Number of discretized times");
@@ -136,40 +173,12 @@ public class ApproximatingModelsTest {
 		plotJR.setIsLegendVisible(true);
 		plotJR.show();
 		
-		final Plot2D plotLR = new Plot2D(minNumberOfTimes, maxNumberOfTimes,  maxNumberOfTimes-minNumberOfTimes+1, Arrays.asList(
+		final Plot2D plotLR = new Plot2D(minNumberOfTimes, maxNumberOfTimes,  (maxNumberOfTimes-minNumberOfTimes+2)/2, Arrays.asList(
 				new Named<DoubleUnaryOperator>("Leisen Reimer", numberOfTimesToPriceLeisenReimer),
 				new Named<DoubleUnaryOperator>("Black-Scholes", dummyFunctionBlackScholesPrice)));
 		plotLR.setXAxisLabel("Number of discretized times");
 		plotLR.setYAxisLabel("Price");
 		plotLR.setIsLegendVisible(true);
 		plotLR.show();
-		
-
-		
-		
-//		final Plot2D plotCRR = new Plot2D(minNumberOfTimes, maxNumberOfTimes, (maxNumberOfTimes-minNumberOfTimes+2)/2, Arrays.asList(
-//				new Named<DoubleUnaryOperator>("Cox Ross Rubinstein", numberOfTimesToPriceCoxRossRubinsteinModel),
-//				new Named<DoubleUnaryOperator>("Black-Scholes", dummyFunctionBlackScholesPrice)));
-//		
-//		plotCRR.setXAxisLabel("Number of discretized times");
-//		plotCRR.setYAxisLabel("Price");
-//		plotCRR.setIsLegendVisible(true);
-//		plotCRR.show();
-//		
-//		final Plot2D plotJR = new Plot2D(minNumberOfTimes, maxNumberOfTimes, (maxNumberOfTimes-minNumberOfTimes+2)/2, Arrays.asList(
-//				new Named<DoubleUnaryOperator>("Jarrow Rudd", numberOfTimesToPriceJarrowRuddModel),
-//				new Named<DoubleUnaryOperator>("Black-Scholes", dummyFunctionBlackScholesPrice)));
-//		plotJR.setXAxisLabel("Number of discretized times");
-//		plotJR.setYAxisLabel("Price");
-//		plotJR.setIsLegendVisible(true);
-//		plotJR.show();
-//		
-//		final Plot2D plotLR = new Plot2D(minNumberOfTimes, maxNumberOfTimes,  (maxNumberOfTimes-minNumberOfTimes+2)/2, Arrays.asList(
-//				new Named<DoubleUnaryOperator>("Leisen Reimer", numberOfTimesToPriceLeisenReimer),
-//				new Named<DoubleUnaryOperator>("Black-Scholes", dummyFunctionBlackScholesPrice)));
-//		plotLR.setXAxisLabel("Number of discretized times");
-//		plotLR.setYAxisLabel("Price");
-//		plotLR.setIsLegendVisible(true);
-//		plotLR.show();
 	}
 }
