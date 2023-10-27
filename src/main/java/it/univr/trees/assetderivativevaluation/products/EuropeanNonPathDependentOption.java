@@ -62,11 +62,16 @@ public class EuropeanNonPathDependentOption {
 	 */
 	public double getValueDirect(ApproximatingBinomialModel approximatingBinomialModel) {
 		//the values of the payoffs..
-		double[] payoffValues = approximatingBinomialModel.getTransformedValuesAtGivenTime(maturity, payoffFunction);
+		//(f(S_0u^nd^0),f(S_0u^(n-1)d^1),...,f(S_0u^0d^n))
+		double[] payoffValues = approximatingBinomialModel.
+				getTransformedValuesAtGivenTime(maturity, payoffFunction);
 		//and the corresponding probabilities
-		double[] valuesProbabailities = approximatingBinomialModel.getValuesProbabilitiesAtGivenTime(maturity);
+		//(Q(S_0u^nd^0),Q(S_0u^(n-1)d^1),...,Q(S_0u^0d^n))
+		double[] valuesProbabailities = approximatingBinomialModel.
+				getValuesProbabilitiesAtGivenTime(maturity);
 		//the we compute the weighted sum..
-		double nonDiscountedValue = UsefulMethodsForArrays.getScalarProductTwoArrays(payoffValues, valuesProbabailities);
+		double nonDiscountedValue = UsefulMethodsForArrays.
+				getScalarProductTwoArrays(payoffValues, valuesProbabailities);
 		double riskFreeRate = approximatingBinomialModel.getRiskFreeRate();
 		//and discount
 		return Math.exp(-riskFreeRate*maturity)*nonDiscountedValue;
