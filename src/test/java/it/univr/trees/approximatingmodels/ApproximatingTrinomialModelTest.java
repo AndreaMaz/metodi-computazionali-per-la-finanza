@@ -3,6 +3,7 @@ package it.univr.trees.approximatingmodels;
 import java.util.Arrays;
 import java.util.function.DoubleUnaryOperator;
 
+import it.univr.trees.assetderivativevaluation.products.EuropeanNonPathDependentOption;
 import it.univr.trees.assetderivativevaluation.products.NotTooNiceEuropeanNonPathDependentOptionForTrinomialModel;
 import net.finmath.functions.AnalyticFormulas;
 import net.finmath.plots.Named;
@@ -30,8 +31,7 @@ public class ApproximatingTrinomialModelTest {
 				new NotTooNiceEuropeanNonPathDependentOptionForTrinomialModel(lastTime, payoffFunction);
 
 		
-//		EuropeanNonPathDependentOption ourOtherOption =
-//				new EuropeanNonPathDependentOption(lastTime, payoffFunction);
+		EuropeanNonPathDependentOption ourOtherOption =	new EuropeanNonPathDependentOption(lastTime, payoffFunction);
 
 		
 		
@@ -50,23 +50,23 @@ public class ApproximatingTrinomialModelTest {
 		};
 		
 		
-//		DoubleUnaryOperator numberOfTimesToPriceCoxRossModel = (numberOfTimesForFunction) -> {
-//			CoxRossRubinsteinModel ourModelForFunction = new CoxRossRubinsteinModel(spotPrice, riskFreeRate,
-//					volatility, lastTime, (int) numberOfTimesForFunction);		
-//			return ourOtherOption.getValue(ourModelForFunction);
-//		};
-//		
-//		DoubleUnaryOperator numberOfTimesToPriceLeisenReimerModel = (numberOfTimesForFunction) -> {
-//			LeisenReimerModel ourModelForFunction = new LeisenReimerModel(spotPrice, riskFreeRate,
-//					volatility, lastTime, (int) numberOfTimesForFunction, strike);		
-//			return ourOtherOption.getValue(ourModelForFunction);
-//		};
-//		
-//		DoubleUnaryOperator numberOfTimesToPriceJarrowRuddModel = (numberOfTimesForFunction) -> {
-//			JarrowRuddModel ourModelForFunction = new JarrowRuddModel(spotPrice, riskFreeRate,
-//					volatility, lastTime, (int) numberOfTimesForFunction);		
-//			return ourOtherOption.getValue(ourModelForFunction);
-//		};
+		DoubleUnaryOperator numberOfTimesToPriceCoxRossModel = (numberOfTimesForFunction) -> {
+			CoxRossRubinsteinModel ourModelForFunction = new CoxRossRubinsteinModel(spotPrice, riskFreeRate,
+					volatility, lastTime, (int) numberOfTimesForFunction);		
+			return ourOtherOption.getValue(ourModelForFunction);
+		};
+		
+		DoubleUnaryOperator numberOfTimesToPriceLeisenReimerModel = (numberOfTimesForFunction) -> {
+			LeisenReimerModel ourModelForFunction = new LeisenReimerModel(spotPrice, riskFreeRate,
+					volatility, lastTime, (int) numberOfTimesForFunction, strike);		
+			return ourOtherOption.getValue(ourModelForFunction);
+		};
+		
+		DoubleUnaryOperator numberOfTimesToPriceJarrowRuddModel = (numberOfTimesForFunction) -> {
+			JarrowRuddModel ourModelForFunction = new JarrowRuddModel(spotPrice, riskFreeRate,
+					volatility, lastTime, (int) numberOfTimesForFunction);		
+			return ourOtherOption.getValue(ourModelForFunction);
+		};
 
 		
 		/*
@@ -82,16 +82,16 @@ public class ApproximatingTrinomialModelTest {
 		
 		
 		//we now plot the functions from a minimum number of points to a maximum number of points
-		int maxNumberOfTimes = 50;
+		int maxNumberOfTimes = 500;
 		int minNumberOfTimes = 10;
 		
 		//look at the Plot2D constructor.
 		final Plot2D plotBoyle = new Plot2D(minNumberOfTimes, maxNumberOfTimes, maxNumberOfTimes-minNumberOfTimes+1,
 				Arrays.asList(
 				new Named<DoubleUnaryOperator>("Boyle", numberOfTimesToPriceTrinomialModel),
-				//new Named<DoubleUnaryOperator>("Cox-Ross-Rubinstein", numberOfTimesToPriceCoxRossModel),
-				//new Named<DoubleUnaryOperator>("Jarrow-Rudd", numberOfTimesToPriceJarrowRuddModel),
-				//new Named<DoubleUnaryOperator>("Leisen-Reimer", numberOfTimesToPriceLeisenReimerModel),
+				new Named<DoubleUnaryOperator>("Cox-Ross-Rubinstein", numberOfTimesToPriceCoxRossModel),
+				new Named<DoubleUnaryOperator>("Jarrow-Rudd", numberOfTimesToPriceJarrowRuddModel),
+				new Named<DoubleUnaryOperator>("Leisen-Reimer", numberOfTimesToPriceLeisenReimerModel),
 				new Named<DoubleUnaryOperator>("Black-Scholes", dummyFunctionBlackScholesPrice))
 				);	
 		plotBoyle.setXAxisLabel("Number of discretized times");

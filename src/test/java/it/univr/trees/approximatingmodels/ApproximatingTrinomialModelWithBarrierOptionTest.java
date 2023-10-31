@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.function.DoubleUnaryOperator;
 
 import it.univr.analyticformulas.OurAnalyticFormulas;
+import it.univr.trees.assetderivativevaluation.products.EuropeanBarrierOption;
 import it.univr.trees.assetderivativevaluation.products.NotTooNiceEuropeanBarrierOptionForTrinomialModel;
 import net.finmath.plots.Named;
 import net.finmath.plots.Plot2D;
@@ -24,7 +25,7 @@ public class ApproximatingTrinomialModelWithBarrierOptionTest {
 		DoubleUnaryOperator payoffFunction = (x) -> (x - strike > 0 ? x - strike : 0.0);
 		
 		NotTooNiceEuropeanBarrierOptionForTrinomialModel ourOption = new NotTooNiceEuropeanBarrierOptionForTrinomialModel(lastTime, payoffFunction, lowerBarrier, Double.MAX_VALUE);
-		//EuropeanBarrierOption otherOption = new EuropeanBarrierOption(lastTime, payoffFunction, lowerBarrier, Double.MAX_VALUE);
+		EuropeanBarrierOption otherOption = new EuropeanBarrierOption(lastTime, payoffFunction, lowerBarrier, Double.MAX_VALUE);
 
 		
 		/*
@@ -43,21 +44,21 @@ public class ApproximatingTrinomialModelWithBarrierOptionTest {
 		return ourOption.getValue(ourModelForFunction);
 		};		
 		
-//		DoubleUnaryOperator numberOfTimesToPriceCoxRossRubinsteinModel = (numberOfTimesForFunction) -> {
-//			CoxRossRubinsteinModel ourModelForFunction = new CoxRossRubinsteinModel(spotPrice, riskFreeRate, volatility, lastTime, (int) numberOfTimesForFunction);		
-//			return otherOption.getValue(ourModelForFunction);
-//		};
-//		
-//		DoubleUnaryOperator numberOfTimesToPriceJarrowRuddModel = (numberOfTimesForFunction) -> {
-//			JarrowRuddModel ourModelForFunction = new JarrowRuddModel(spotPrice, riskFreeRate, volatility, lastTime, (int) numberOfTimesForFunction);		
-//			return otherOption.getValue(ourModelForFunction);
-//		};
-//		
-//		
-//		DoubleUnaryOperator numberOfTimesToPriceLeisenReimerModel = (numberOfTimesForFunction) -> {
-//			LeisenReimerModel ourModelForFunction = new LeisenReimerModel(spotPrice, riskFreeRate, volatility, lastTime, (int) numberOfTimesForFunction, strike);		
-//			return otherOption.getValue(ourModelForFunction);
-//		};
+		DoubleUnaryOperator numberOfTimesToPriceCoxRossRubinsteinModel = (numberOfTimesForFunction) -> {
+			CoxRossRubinsteinModel ourModelForFunction = new CoxRossRubinsteinModel(spotPrice, riskFreeRate, volatility, lastTime, (int) numberOfTimesForFunction);		
+			return otherOption.getValue(ourModelForFunction);
+		};
+		
+		DoubleUnaryOperator numberOfTimesToPriceJarrowRuddModel = (numberOfTimesForFunction) -> {
+			JarrowRuddModel ourModelForFunction = new JarrowRuddModel(spotPrice, riskFreeRate, volatility, lastTime, (int) numberOfTimesForFunction);		
+			return otherOption.getValue(ourModelForFunction);
+		};
+		
+		
+		DoubleUnaryOperator numberOfTimesToPriceLeisenReimerModel = (numberOfTimesForFunction) -> {
+			LeisenReimerModel ourModelForFunction = new LeisenReimerModel(spotPrice, riskFreeRate, volatility, lastTime, (int) numberOfTimesForFunction, strike);		
+			return otherOption.getValue(ourModelForFunction);
+		};
 		
 		/*
 		 * This is the DoubleUnaryOperator to plot the analytic price. "Dummy" in the sense that it is a function
@@ -74,9 +75,9 @@ public class ApproximatingTrinomialModelWithBarrierOptionTest {
 		
 		final Plot2D plot = new Plot2D(minNumberOfTimes, maxNumberOfTimes, maxNumberOfTimes-minNumberOfTimes+1, Arrays.asList(
 				new Named<DoubleUnaryOperator>("Boyle", numberOfTimesToPriceBoyleModel),
-				//new Named<DoubleUnaryOperator>("Cox Ross Rubinstein", numberOfTimesToPriceCoxRossRubinsteinModel),
-				//new Named<DoubleUnaryOperator>("Jarrow-Rudd", numberOfTimesToPriceJarrowRuddModel),
-				//new Named<DoubleUnaryOperator>("Leisen-Reimer", numberOfTimesToPriceLeisenReimerModel),
+				new Named<DoubleUnaryOperator>("Cox Ross Rubinstein", numberOfTimesToPriceCoxRossRubinsteinModel),
+				new Named<DoubleUnaryOperator>("Jarrow-Rudd", numberOfTimesToPriceJarrowRuddModel),
+				new Named<DoubleUnaryOperator>("Leisen-Reimer", numberOfTimesToPriceLeisenReimerModel),
 				new Named<DoubleUnaryOperator>("Analytic price", dummyFunctionBlackScholesPrice)));
 		
 		plot.setXAxisLabel("Number of discretized times");
