@@ -10,39 +10,55 @@ import java.util.Arrays;
  */
 
 public class PseudoRandomNumbersTesting {
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		long firstSeed = 1897;// the seed is the first entry of the sequence of pseudo random numbers
+//        System.out.println(Long.MAX_VALUE);
+//        System.out.println(Long.MIN_VALUE);
+//        System.out.println(Long.MAX_VALUE-1);
+//        System.out.println(Long.MAX_VALUE+1);
+//        System.out.println(Long.MAX_VALUE+2000000);
 
-		int numberOfPseudoRandomNumbers = 5;
+        long firstSeed = 1897;// the seed is the first entry of the sequence of pseudo random numbers
 
-		LinearCongruentialGenerator firstGenerator = new LinearCongruentialGenerator(numberOfPseudoRandomNumbers,
-				firstSeed);
+        int numberOfPseudoRandomNumbers = 5;
 
-		long[] sequenceGeneratedByTheFirstObject = firstGenerator.getRandomNumberSequence();
+        LinearCongruentialGenerator firstGenerator = new LinearCongruentialGenerator(numberOfPseudoRandomNumbers,
+                firstSeed);
 
-		System.out.println("Simulation of " + numberOfPseudoRandomNumbers + " integers with seed " + firstSeed
-				+ " : " + Arrays.toString(sequenceGeneratedByTheFirstObject));
+        long[] sequenceGeneratedByTheFirstObject = firstGenerator.getRandomNumberSequence();
 
-		System.out.println();
+        System.out.println("Simulation of " + numberOfPseudoRandomNumbers + " integers with seed " + firstSeed
+                + " : " + Arrays.toString(sequenceGeneratedByTheFirstObject));
 
-		System.out.println("First four number of the random sequence, excluded the seed:");
-		
-		// Maybe the user is not interested to have all the sequence, but only in the first numbers
-		for (int i = 0; i < numberOfPseudoRandomNumbers; i++) {
-			System.out.println(firstGenerator.getNextInteger());
-		}
+        System.out.println();
 
-		System.out.println();
+        System.out.println("First four number of the random sequence, excluded the seed:");
 
-		long secondSeed = 8L;
+        // Maybe the user is not interested to have all the sequence, but only in the first numbers
+        for (int i = 0; i < numberOfPseudoRandomNumbers; i++) {
+            System.out.println(firstGenerator.getNextInteger());
+        }
 
-		LinearCongruentialGenerator secondGenerator = new LinearCongruentialGenerator(numberOfPseudoRandomNumbers,
-				secondSeed);
+        System.out.println();
 
-		long[] sequenceGeneratedByTheSecondObject = secondGenerator.getRandomNumberSequence();
+//        long secondSeed = 8;
+//
+//        LinearCongruentialGenerator secondGenerator = new LinearCongruentialGenerator(numberOfPseudoRandomNumbers,
+//                secondSeed);
+//
+//        long[] sequenceGeneratedByTheSecondObject = secondGenerator.getRandomNumberSequence();
+//
+//        System.out.println("Simulation of " + numberOfPseudoRandomNumbers + " integers with seed " + secondSeed
+//                + " : " + Arrays.toString(sequenceGeneratedByTheSecondObject));
 
-		System.out.println("Simulation of " + numberOfPseudoRandomNumbers + " integers with seed " + secondSeed
-				+ " : " + Arrays.toString(sequenceGeneratedByTheSecondObject));
-	}
+        LinearCongruentialGenerator secondGenerator = new LinearCongruentialGenerator(numberOfPseudoRandomNumbers);
+
+        long[] sequenceGeneratedByTheSecondObject = secondGenerator.getRandomNumberSequence();
+
+        System.out.println("Simulation of " + numberOfPseudoRandomNumbers + " integers with random seed "
+                + " : " + Arrays.toString(sequenceGeneratedByTheSecondObject));
+
+
+
+    }
 }
