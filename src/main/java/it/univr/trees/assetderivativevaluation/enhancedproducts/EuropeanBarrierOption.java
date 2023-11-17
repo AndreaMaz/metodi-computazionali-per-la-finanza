@@ -9,7 +9,7 @@ import it.univr.usefulmethodsarrays.UsefulMethodsForArrays;
  * This class implements the valuation of an European option with double or single barrier. This is a path
  * dependent option which pays the payoff only if the value of the underlying stays in an interval
  * [lowerBarrier, upperBarrier] for the whole path. We have single barrier if we only have lowerBarrier
- * or only have upperBarrier. The value is computed via an approximation of a Black-Scholes process
+ * or only have upperBarrier. The value is computed via an approximation of a continuous time process
  * with a tree model, repesented by an object of type ApproximatingTreeModelInterface.
  * 
  * @author Andrea Mazzon
@@ -41,7 +41,7 @@ public class EuropeanBarrierOption {
 	}
 	
 	/**
-	 * It returns the discounted value of the option written on the Black-Scholes model approximated by
+	 * It returns the discounted value of the option written on the continuous time model approximated by
 	 * the object of type ApproximatingTreeModelInterface given in input. The value of the option is computed
 	 * as the discounted expectation of the possible values at maturity. This expectation is computed by going backward
 	 * from maturity to initial time and computing the iterative conditional expectation, see slides. The conditional
