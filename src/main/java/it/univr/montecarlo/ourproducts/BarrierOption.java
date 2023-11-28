@@ -89,7 +89,6 @@ public class BarrierOption extends AbstractAssetMonteCarloProduct {
 		DoubleUnaryOperator indicatorFunction = x -> (x>=lowerBarrier & x<=upperBarrier ? 1.0 : 0.0);
 		//we check all times
 		for (double currentTime : discretizedTimes) {
-			
 			currentTime = Math.min(currentTime, maturity);
 			//this will give an object of type RandomVariable representing the array 
 			//(X_{t_{k+1}}(omega_0),X_{t_{k+1}}(omega_1),...,X_{t_{k+1}}(omega_m))
@@ -113,7 +112,7 @@ public class BarrierOption extends AbstractAssetMonteCarloProduct {
 		// Get underlying and numeraire
 
 		// Get X(T)
-		final RandomVariable underlyingAtMaturity	= model.getAssetValue(maturity, 0);
+		final RandomVariable underlyingAtMaturity	= model.getAssetValue(maturity, underlyingIndex);
 
 		// The payoff: values = max(underlying - strike, 0) = V(T) = max(X(T)-K,0)
 		RandomVariable values = underlyingAtMaturity.sub(strike).floor(0.0);
