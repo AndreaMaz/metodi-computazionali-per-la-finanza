@@ -113,9 +113,17 @@ public class CliquetOptionWithBSControlVariate extends AbstractAssetMonteCarloPr
 		double firstStrike = localFloor + 1;
 		double secondStrike = localCap + 1;
 
-		double firstCallPrice = AnalyticFormulas.blackScholesOptionValue(initialValueForAnalytic, riskFreeRate, volatility, maturityOfTheCallOptions, firstStrike);
+		
+		double inverseOfDiscountFactor=Math.exp(riskFreeRate*maturityOfTheCallOptions);
+		
+		double firstCallPrice = inverseOfDiscountFactor*
+			AnalyticFormulas.blackScholesOptionValue(initialValueForAnalytic, riskFreeRate, volatility,
+					maturityOfTheCallOptions, firstStrike);
 
-		double secondCallPrice = AnalyticFormulas.blackScholesOptionValue(initialValueForAnalytic, riskFreeRate, volatility, maturityOfTheCallOptions, secondStrike);
+		double secondCallPrice =
+			inverseOfDiscountFactor*AnalyticFormulas.blackScholesOptionValue(initialValueForAnalytic, riskFreeRate, volatility,
+					maturityOfTheCallOptions, secondStrike);
+		
 		
 		
 		// we repeat the same over all the time intervals, so we multiply by their number (we could not do that if times are not equally spaced, in general)
@@ -157,16 +165,16 @@ public class CliquetOptionWithBSControlVariate extends AbstractAssetMonteCarloPr
 			underlyingAtCurrentTime	= model.getAssetValue(currentTime, underlyingIndex);//X_{t_n}
 			currentReturn = underlyingAtCurrentTime.div(underlyingAtPastTime).sub(1);//X_{t_n}/X_{t_{n-1}}-1
 			currentReturnTruncated = currentReturn.floor(localFloor).cap(localCap);//min(max(X_{t_n}/X_{t_{n-1}}-1,floor),cap)
-			sumOfTruncations = sumOfTruncations.add(currentReturnTruncated);//we update the sum
+			sumOfTruncations = sumOfTruncations.add(currentReturnTruncated);//we update the sum. X (see notes)
 			pastTime = currentTime;
 			
 		}
 
 		
-		RandomVariable payoffWithoutControlVariates = sumOfTruncations.floor(globalFloor).cap(globalCap);
+		RandomVariable payoffWithoutControlVariates = sumOfTruncations.floor(globalFloor).cap(globalCap);//Y (see notes)
 		
 		
-		//now we apply the contrrol variate
+		//now we apply the control variate
 		
 		//computation of the optimal beta
 		double covariance = payoffWithoutControlVariates.covariance(sumOfTruncations).doubleValue();//the method covariance returns a RandomVariable
@@ -188,7 +196,7 @@ public class CliquetOptionWithBSControlVariate extends AbstractAssetMonteCarloPr
         double volatility = processModel.getVolatility().doubleValue();
 		double analyticValueControlVariate = computeAnalyticValue(riskFreeRate,volatility);
 
-		RandomVariable termToSubtract = payoffWithoutControlVariates.sub(analyticValueControlVariate).mult(optimalBeta);
+		RandomVariable termToSubtract = sumOfTruncations.sub(analyticValueControlVariate).mult(optimalBeta);
 				
 		RandomVariable values = payoffWithoutControlVariates.sub(termToSubtract);
 		

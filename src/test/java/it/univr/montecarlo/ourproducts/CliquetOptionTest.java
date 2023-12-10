@@ -32,7 +32,7 @@ public class CliquetOptionTest {
 		double localCap = 0.3;
 		
 		double globalFloor = 0;
-		double globalCap = numberOfIntervalsBetweenMonitoringTimes * 0.3;
+		double globalCap = numberOfIntervalsBetweenMonitoringTimes * 0.15;
 
 		// Monte Carlo parameters:
 		

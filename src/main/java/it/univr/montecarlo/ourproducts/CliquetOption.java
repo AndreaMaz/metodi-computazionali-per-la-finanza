@@ -119,7 +119,6 @@ public class CliquetOption extends AbstractAssetMonteCarloProduct {
 			currentReturnTruncated = currentReturn.floor(localFloor).cap(localCap);//min(max(X_{t_n}/X_{t_{n-1}}-1,floor),cap)
 			sumOfTruncations = sumOfTruncations.add(currentReturnTruncated);//we update the sum
 			pastTime = currentTime;
-			
 		}
 
 
