@@ -142,6 +142,57 @@ public class UsefulMethodsForArrays {
 		double[] productOfArrays = multArrays(firstArray, secondArray);
 		return getSum(productOfArrays);
 	}
+	
+	
+	/**
+	 * It returns an array whose values are given by the maximum between the values of the arrays
+	 *
+	 * @param firstArray
+	 * @param secondArray
+	 * @return an array whose i-th element is max(firstArray[i], secondArray[i])
+	 */
+	public static double[] getMaxValuesBetweenTwoArrays(double[] firstArray, double[] secondArray) {
+		int firstLength = firstArray.length;
+		if (firstLength != secondArray.length) {
+			throw new IllegalArgumentException("Error: the two arrays must have same length!");
+		}
+		double[] maxValues = new double[firstLength];
+		for (int i = 0; i < firstLength; i++) {
+			maxValues[i] = Math.max(firstArray[i], secondArray[i]);
+		}
+		return maxValues;
+	}
 
+	/**
+	 * It returns the biggest element of a one-dimensional array of doubles
+	 *
+	 * @param vector the one-dimensional array
+	 * @return the biggest element of the one-dimensional array
+	 */
+	public static double getMin(double[] vector) {
+		double min = vector[0];
+		for (int i = 1; i < vector.length; i++) {
+			if (vector[i] < min) {
+				min = vector[i];
+			}
+		}
+		return min;
+	}
 
+	/**
+	 * It returns the biggest element of a one-dimensional array of doubles
+	 *
+	 * @param vector the one-dimensional array
+	 * @return the biggest element of the one-dimensional array
+	 */
+	public static double getMax(double[] vector) {
+		double max = vector[0];
+		for (int i = 1; i < vector.length; i++) {
+			if (vector[i] > max) {
+				max = vector[i];
+			}
+		}
+		return max;
+	}
+	
 }
