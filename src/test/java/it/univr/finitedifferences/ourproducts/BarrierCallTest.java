@@ -38,9 +38,10 @@ public class BarrierCallTest {
 		double maturity = 3.0;		
 		double strike = 100;
 		
-		double theta = 0.5;
-
+	
 		AbstractAssetMonteCarloProduct optionValueMCCalculator = new BarrierOption(maturity, strike, lowerBarrier, upperBarrier);
+
+		double theta = 0.5;
 
 		//the object representing the option (like the classes implementing AbstractMonteCarloProduct)
 		FiniteDifference1DProduct optionValueFDCalculator = new FDMBarrierCallOption(maturity, strike, lowerBarrier, upperBarrier, theta);

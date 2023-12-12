@@ -2,8 +2,10 @@ package it.univr.finitedifferences.ourproducts;
 
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.DoubleUnaryOperator;
 
 import it.univr.usefulmethodsarrays.UsefulMethodsForArrays;
@@ -25,14 +27,13 @@ import net.finmath.plots.PlotableFunction2D;
  *
  */
 public class BarrierCallPlot {
-
-	//this is used to print only the first digit of the maturity
-	private final static DecimalFormat formatterMaturity = new DecimalFormat("0.0");
-
 	
 	public static void main(String[] strings) throws Exception {
-
-		//morel parameters
+		//this is used to print only the first digit of the maturity
+		final DecimalFormat formatterMaturity = new DecimalFormat("0.0");
+		formatterMaturity.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+		
+		//model parameters
 		final double riskFreeRate = 0.06;
 		final double volatility = 0.4;
 		final double initialValue = 50;

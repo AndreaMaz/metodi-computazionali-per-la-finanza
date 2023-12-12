@@ -2,8 +2,10 @@ package it.univr.finitedifferences.finmathlibraryimplementation;
 
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.DoubleUnaryOperator;
 
 import net.finmath.finitedifference.models.FDMBlackScholesModel;
@@ -27,26 +29,41 @@ import net.finmath.plots.PlotableFunction2D;
  */
 public class CallAndPutPlot {
 
-	//this is used to print only the first digit of the maturity in the plot
-	private final static DecimalFormat formatterMaturity = new DecimalFormat("#.#");
-
 	
 	public static void main(String[] strings) throws Exception {
-
+		//this is used to print only the first digit of the maturity
+		final DecimalFormat formatterMaturity = new DecimalFormat("0.0");
+		formatterMaturity.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+		
 		//model parameters
 		final double riskFreeRate = 0.06;
 		final double volatility = 0.4;
 		final double initialValue = 50;
 
 		//discretization parameters
-		final int numberTimeSteps = 120;
 		final int numberSpaceSteps = 120;
+		final int numberTimeSteps = 120;
+		
 		final int numberStandardDeviations = 5;
 		final double theta = 0.5;
 
 		//option parameters
 		final double optionStrike = 50;
 		double maturity = 0.1;//this is just the first maturity for which we do the plot
+		
+//		double forwardValue = initialValue * Math.exp(riskFreeRate * maturity);
+//		double varianceOfStockPrice = Math.pow(initialValue, 2) * Math.exp(2 * riskFreeRate * maturity)
+//					* (Math.exp(Math.pow(volatility, 2) * maturity) - 1);
+//		double upperBound = forwardValue
+//				+ numberStandardDeviations * Math.sqrt(varianceOfStockPrice);
+//		
+//		
+//		double spaceStepLength = upperBound / numberSpaceSteps;
+//		
+//		final double timeStepLength = 0.5*(spaceStepLength*spaceStepLength / (volatility*volatility*upperBound*upperBound)) ;
+		
+//		final int numberTimeSteps = (int) (maturity / timeStepLength);
+
 
 		final FiniteDifference1DModel model = new FDMBlackScholesModel(
 				numberTimeSteps,//for the discretization of the time interval
